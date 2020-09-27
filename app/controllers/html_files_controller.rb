@@ -1,9 +1,15 @@
 class LanguageDetector < ApplicationControllerBase
   get '/' do
-    'Hello World!'
+    slim :index
   end
 
-  post '/index_file' do
-    
+  get '/files/:id' do
+    @html_file = HtmlFile.find(params[:id])
+  end
+
+  post '/detect-language' do
+    html_file = DetectLanguageService.new(params[:file].path).call
+
+    redirect "/files/#{html_file.id}"
   end
 end

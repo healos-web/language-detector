@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_27_092452) do
+ActiveRecord::Schema.define(version: 2020_09_27_150655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "distances", force: :cascade do |t|
+    t.bigint "first_file_id"
+    t.bigint "second_file_id"
+    t.integer "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["first_file_id"], name: "index_distances_on_first_file_id"
+    t.index ["second_file_id"], name: "index_distances_on_second_file_id"
+  end
 
   create_table "html_files", force: :cascade do |t|
     t.string "language"

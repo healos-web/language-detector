@@ -10,12 +10,17 @@ class LanguageDetectorService
     distances = []
 
     HtmlFile.includes(:ngrams).where(standart: true).each do |file|
-      distances << { lang: file.language, distance: count_distance(positions, parse_positions(file.ngrams)) }
+      distances << { lang: file.language, file: file, distance: count_distance(positions, parse_positions(file.ngrams)) }
     end
 
     result_lang = (distances.max { |a, b| a[:distance] <=> b[:distance] })
 
-    { distances: distances, language: result_lang }
+    html_file.update!(language: result_lang)
+    distances.each do |distance|
+      html_file.distances_from.create!(second_file: distance[:file].id, value: distance[:distance])
+    end
+
+    html_file
   end
 
   private
