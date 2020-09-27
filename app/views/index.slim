@@ -1,0 +1,12 @@
+.container.d-flex.align-items-center.justify-content-center[style="height: 60vh"]
+  div
+    - if HtmlFile.saved.any?
+      h1 Saved files
+      ul
+        - HtmlFile.saved.each do |file|
+          li
+    form.mt-5 action='/detect-language' enctype="multipart/form-data" method="post"
+      .form-group.d-flex.flex-column
+        label Html file with text
+        input.from-control[type='file' name='file' required accept='text/html']
+      button.btn.btn-primary type='submit' Detect

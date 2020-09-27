@@ -1,12 +1,13 @@
 class DocParserService
-  attr_reader :text, :file_uuid, :ngrams_store, :language, :standart
+  attr_reader :text, :file_uuid, :ngrams_store, :language, :standart, :file_name
 
-  def initialize(file_path:, standart: false, language: nil)
+  def initialize(file_path:, standart: false, language: nil, file_name: nil)
     doc = Nokogiri::HTML(File.open(file_path))
     @text = doc.search('p').text.gsub("\n", '').gsub('.', ' ')
     @file_uuid = Digest::UUID.uuid_v3(Digest::UUID::DNS_NAMESPACE, text)
     @standart = standart
     @language = language
+    @file_name = file_name
     @ngrams_store = {}
   end
 
@@ -14,7 +15,7 @@ class DocParserService
     raise 'FileParsed' if HtmlFile.find_by(uuid: file_uuid)
 
     ActiveRecord::Base.transaction do
-      file = HtmlFile.create!(standart: standart, uuid: file_uuid, language: language)
+      file = HtmlFile.create!(standart: standart, uuid: file_uuid, language: language, name: file_name)
       ng = NGram.new({ size: 5, word_separator: ' ' })
 
       ngrams = ng.parse(text)
