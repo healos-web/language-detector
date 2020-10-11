@@ -29,6 +29,8 @@ class DocParserService
       ngrams_store.keys.each do |key|
         Ngram.create!(html_file: file, frequency: ngrams_store[key], gram: key)
       end
+
+      file
     end
   end
 end

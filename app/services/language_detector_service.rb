@@ -6,20 +6,14 @@ class LanguageDetectorService
   end
 
   def call
-    positions = html_file.ngrams.order(frequency: :desc)
-    distances = []
+    positions = parse_positions(html_file.ngrams.order(frequency: :desc))
 
     HtmlFile.includes(:ngrams).where(standart: true).each do |file|
-      distances << { lang: file.language, file: file, distance: count_distance(positions, parse_positions(file.ngrams)) }
+      Distance.create!(first_file: html_file, second_file: file, value: count_distance(positions, parse_positions(file.ngrams)))
     end
-
-    result_lang = (distances.max { |a, b| a[:distance] <=> b[:distance] })
+    result_lang = html_file.distances_from.order(:value).first.second_file.language
 
     html_file.update!(language: result_lang)
-    distances.each do |distance|
-      html_file.distances_from.create!(second_file: distance[:file].id, value: distance[:distance])
-    end
-
     html_file
   end
 
@@ -31,6 +25,8 @@ class LanguageDetectorService
     grams.each_with_index do |ng, index|
       positions[ng.gram] = index
     end
+
+    positions
   end
 
   def count_distance(positions, standart_positions)

@@ -5,6 +5,8 @@
       ul
         - HtmlFile.saved.each do |file|
           li
+            a href="/files/#{file.id}"
+              | #{file.name}
     form.mt-5 action='/detect-language' enctype="multipart/form-data" method="post"
       .form-group.d-flex.flex-column
         label Html file with text
