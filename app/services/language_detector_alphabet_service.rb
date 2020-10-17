@@ -11,9 +11,9 @@ class LanguageDetectorAlphabetService
     HtmlFile.standart.each do |file|
       diff = file.alphabet.split('') - html_file.alphabet.split('')
 
-      if diff.length < min_diff[:value] || !min_diff[:value]
+      if !min_diff[:value] || diff.size < min_diff[:value]
         min_diff[:file] = file
-        min_diff[:value] = diff
+        min_diff[:value] = diff.size
       end
     end
 

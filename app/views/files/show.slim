@@ -4,11 +4,12 @@
   h3 Processed file #{@file.name}
   h6 Detected language - #{@file.language}
   
-  h6 Sum distances
-  .d-flex.flex-column
-    - @file.distances_from.includes(:second_file).order(:value).each do |dist|
-      p
-        = "#{dist.second_file.language} --- #{dist.value}"
+  - if @file.distances_from.any?
+    h6 Sum distances
+    .d-flex.flex-column
+      - @file.distances_from.includes(:second_file).order(:value).each do |dist|
+        p
+          = "#{dist.second_file.language} --- #{dist.value}"
   
   h6 Ngrams
   table.table

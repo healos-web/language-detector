@@ -12,7 +12,8 @@ class DocParserService
   end
 
   def call
-    raise 'FileParsed' if HtmlFile.find_by(uuid: file_uuid)
+    html_file = HtmlFile.find_by(uuid: file_uuid)
+    return html_file if html_file
 
     ActiveRecord::Base.transaction do
       file = HtmlFile.create!(standart: standart, uuid: file_uuid, language: language, name: file_name)

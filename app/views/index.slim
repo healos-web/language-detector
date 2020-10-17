@@ -5,8 +5,9 @@
       ul
         - HtmlFile.saved.each do |file|
           li
-            a href="/files/#{file.id}"
-              | #{file.name}
+            .d-flex.flex-row
+              a href="/files/#{file.id}"
+                | #{file.name}
     form.mt-5 action='/detect-language' enctype="multipart/form-data" method="post"
       .form-check
         input.form-check-input checked="" name="method" type="radio" value="ngram" /
@@ -16,6 +17,10 @@
         input.form-check-input name="method" type="radio" value="alphabet" /
         label.form-check-label 
           | Alphabet method
+      .form-check
+        input.form-check-input name="method" type="radio" value="lib" /
+        label.form-check-label 
+          | Detect Language API
       .form-group.d-flex.flex-column.mt-4
         label Html file with text
         input.from-control[type='file' name='file' required accept='text/html']

@@ -15,10 +15,13 @@ class LanguageDetector < ApplicationControllerBase
     ActiveRecord::Base.transaction do
       html_file = DocParserService.new(file_path: tempfile.path, file_name: params[:file][:filename]).call
 
-      if params[:method] == 'alphabet'
+      case params[:method]
+      when 'alphabet'
         LanguageDetectorAlphabetService.new(html_file: html_file).call
-      else
+      when 'ngram'
         LanguageDetectorNgramService.new(html_file: html_file).call
+      when 'lib'
+        LanguageDetectorLibService.new(html_file: html_file, file_path: tempfile.path).call
       end
 
       redirect "/files/#{html_file.id}"
