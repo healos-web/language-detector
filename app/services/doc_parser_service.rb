@@ -30,7 +30,15 @@ class DocParserService
         Ngram.create!(html_file: file, frequency: ngrams_store[key], gram: key)
       end
 
+      file.update!(alphabet: build_alphabet(file))
+
       file
     end
+  end
+
+  private
+
+  def build_alphabet(file)
+    file.ngrams.pluck(:gram).join.gsub('_', '').downcase.split('').uniq.join
   end
 end

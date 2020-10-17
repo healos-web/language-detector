@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 gem 'activerecord', require: 'active_record'
 gem 'activesupport'
+gem 'detect_language'
 gem 'dotenv', require: 'dotenv/load'
 gem 'ngram'
 gem 'nokogiri'

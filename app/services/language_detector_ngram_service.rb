@@ -1,8 +1,8 @@
-class LanguageDetectorService
+class LanguageDetectorNgramService
   attr_reader :html_file
 
-  def initialize(file_path:, file_name:)
-    @html_file = DocParserService.new(file_path: file_path, file_name: file_name).call
+  def initialize(html_file:)
+    @html_file = html_file
   end
 
   def call

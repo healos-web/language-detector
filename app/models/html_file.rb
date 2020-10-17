@@ -4,4 +4,5 @@ class HtmlFile < ActiveRecord::Base
   has_many :distances_to, class_name: 'Distance', foreign_key: :second_file_id, dependent: :destroy
 
   scope :saved, -> { where(standart: false) }
+  scope :standart, -> { where(standart: true) }
 end
